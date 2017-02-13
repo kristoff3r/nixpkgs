@@ -31917,21 +31917,23 @@ EOF
 
   pwntools = buildPythonPackage rec {
     name = "pwntools-${version}";
-    version = "3.1.0";
+    version = "3.4.0";
 
     src = pkgs.fetchurl {
       url = "mirror://pypi/p/pwntools/${name}.tar.gz";
-      sha256 = "1siyky6iq2b155sfjhx10yg2ihvjp2s3kr6i0n5z9v5pi0r7gc6d";
+      sha256 = "1r3b0553iiqy40ppj3ld35ja7nvhnkgy2ahb2phnamlzirdrp97m";
     };
-    propagatedBuildInputs = with self; [ Mako packaging pysocks pygments ROPGadget capstone paramiko pip psutil pyelftools pypandoc pyserial dateutil requests2 tox pkgs.pandoc ];
+    propagatedBuildInputs = with self; [ Mako packaging pysocks pygments ROPGadget capstone paramiko pip psutil pyelftools pypandoc pyserial dateutil requests2 tox pkgs.pandoc intervaltree ];
 
     disabled = isPy3k;
+    doCheck = false; # Tests requires extra users and network access
 
     meta = {
       homepage = "http://pwntools.com";
       description = "CTF framework and exploit development library";
       license = licenses.mit;
-      maintainers = with maintainers; [ bennofs ];
+      maintainers = with maintainers; [ bennofs kristoff3r ];
+      platforms = platforms.linux;
     };
   };
 
@@ -32120,6 +32122,23 @@ EOF
   incremental = callPackage ../development/python-modules/incremental { };
 
   treq = callPackage ../development/python-modules/treq { };
+
+  intervaltree = buildPythonPackage rec {
+    name = "intervaltree-${version}";
+    version = "2.1.0";
+    src = pkgs.fetchurl{
+      url = "mirror://pypi/i/intervaltree/${name}.tar.gz";
+      sha256 = "02w191m9zxkcjqr1kv2slxvhymwhj3jnsyy3a28b837pi15q19dc";
+    };
+    propagatedBuildInputs = with self; [ sortedcontainers pkgs.pandoc ];
+    doCheck = false;
+    meta = {
+      homepage = "https://github.com/chaimleib/intervaltree";
+      description = "A mutable, self-balancing interval tree. Queries may be by point, by range overlap, or by range containment.";
+      license = licenses.asl20;
+      maintainers = with maintainers; [ kristoff3r ];
+    };
+  };
 
 });
 
